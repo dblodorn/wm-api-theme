@@ -9,7 +9,6 @@
   function main_data(){
     $data = array();
     $data['options'] = get_fields('options');
-    $data['projects'] = all_projects();
     return $data;
   }
   

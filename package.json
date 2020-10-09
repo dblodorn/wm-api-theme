@@ -1,0 +1,23 @@
+{
+  "name": "wm-api-theme",
+  "version": "1.0.0",
+  "description": "wm api",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dblodorn/basic-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dblodorn/basic-api/issues"
+  },
+  "homepage": "https://github.com/dblodorn/basic-api#readme",
+  "devDependencies": {
+		"gulp-sftp-up4": "^0.1.8",
+    "gulp": "^4.0.2"
+	}
+}
