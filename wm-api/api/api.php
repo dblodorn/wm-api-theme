@@ -25,7 +25,7 @@
       'callback' => 'watch_data'
     ));
 
-    // will work like /route/?name=post-slug
+    // will work like /route/?name=post-slug&type=post-type
     register_rest_route( $namespace, '/project/', array(
       'methods' => 'GET',
       'callback' => 'get_project_post'

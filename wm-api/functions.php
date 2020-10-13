@@ -50,20 +50,13 @@ add_filter( 'template_include', 'phpless_template');
 if(function_exists('acf_add_options_page')) {
   
   acf_add_options_page(array(
-    'page_title' 	=> 'Site Content',
-    'menu_title' 	=> 'Site Content',
+    'page_title' 	=> 'Site Settings',
+    'menu_title' 	=> 'W&M Site',
     'menu_slug' 	=> 'site-content',
     'capability' 	=> 'edit_posts',
-    'icon_url'    => 'dashicons-welcome-view-site',
+    'icon_url'    => 'dashicons-admin-site',
 		'redirect'		=> false,
-    'position'    => 30
-  ));
-  
-  acf_add_options_page(array(
-    'page_title' 	=> 'Watch Sceduling',
-    'menu_title' 	=> 'Watch Sceduling',
-    'menu_slug' 	=> 'watch-scheduling',
-		'parent_slug'	=> 'site-content',
+    'position'    => 10
   ));
 
   acf_add_options_page(array(
@@ -71,6 +64,23 @@ if(function_exists('acf_add_options_page')) {
     'menu_title' 	=> 'Contact Info',
     'menu_slug' 	=> 'contact-info',
 		'parent_slug'	=> 'site-content',
+  ));
+
+  acf_add_options_page(array(
+    'page_title' 	=> 'Socials',
+    'menu_title' 	=> 'Socials',
+    'menu_slug' 	=> 'socials',
+		'parent_slug'	=> 'site-content',
+  ));
+
+  acf_add_options_page(array(
+    'page_title' 	=> 'Watch Scheduling',
+    'menu_title' 	=> 'Watch Scheduling',
+    'menu_slug' 	=> 'watch-scheduling',
+		'capability' 	=> 'edit_posts',
+    'icon_url'    => 'dashicons-welcome-view-site',
+		'redirect'		=> false,
+    'position'    => 35
   ));
 }
 
@@ -114,3 +124,14 @@ add_filter('netlify_status_capability', function() {
 add_filter('netlify_deploy_capability', function() {
   return 'edit_pages';
 });
+
+function acf_set_featured_image( $value, $post_id, $field  ){ 
+  if($value != ''){
+    //Add the value which is the image ID to the _thumbnail_id meta data for the current post
+    add_post_meta($post_id, '_thumbnail_id', $value);
+  }
+  return $value;
+}
+
+// acf/update_value/name={$field_name} - filter for a specific field based on it's name
+add_filter('acf/update_value/name=video_thumbs', 'acf_set_featured_image', 10, 3);

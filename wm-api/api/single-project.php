@@ -1,10 +1,11 @@
 <?php
   function get_project_post(WP_REST_Request $request){
     $slug = $request['name'];
+    $type = $request['type'];
     if ($slug) {
       $args = array(
         'name' => $slug,
-        'post_type' => 'project',
+        'post_type' => $type,
         'posts_per_page' => -1
       );
       $the_query = new WP_Query( $args );
