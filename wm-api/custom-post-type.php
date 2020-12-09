@@ -299,7 +299,7 @@ function not_our_work_cpt() {
     'query_var'          => true,
     'rewrite'            => array( 'slug' => 'not-our-work' ),
     'capability_type'    => 'post',
-    'taxonomies'         => array('director', 'type'),
+    'taxonomies'         => array('category', 'director', 'type'),
     'has_archive'        => true,
     'hierarchical'       => false,
     'menu_position'      => 50,
@@ -396,7 +396,7 @@ function watch_schedules_cpt() {
     'has_archive'        => true,
     'hierarchical'       => false,
     'menu_position'      => null,
-    'menu_icon'          => 'dashicons-smiley',
+    'menu_icon'          => 'dashicons-list-view',
     'show_in_rest'       => true,
     'rest_base'          => 'watch-schedules-api',
     'rest_controller_class' => 'WP_REST_Posts_Controller',
@@ -497,5 +497,93 @@ function tsm_convert_id_to_term_in_query_curator($query) {
 	}
 }
 add_filter('parse_query', 'tsm_convert_id_to_term_in_query_curator');
+
+//-------------------------------------------------------------------
+// CUSTOM POST TYPE: REELS
+//-------------------------------------------------------------------
+
+add_action( 'init', 'reel_cpt' );
+
+function reel_cpt() {
+  $labels = array(
+    'name'               => _x( 'Reels', 'post type general name', 'your-plugin-textdomain' ),
+    'singular_name'      => _x( 'Reels', 'post type singular name', 'your-plugin-textdomain' ),
+    'menu_name'          => _x( 'Reels', 'admin menu', 'your-plugin-textdomain' ),
+    'name_admin_bar'     => _x( 'Reels', 'add new on admin bar', 'your-plugin-textdomain' ),
+    'add_new'            => _x( 'Add New', 'Reels', 'your-plugin-textdomain' ),
+    'add_new_item'       => __( 'Add New Reels', 'your-plugin-textdomain' ),
+    'new_item'           => __( 'New Reels', 'your-plugin-textdomain' ),
+    'edit_item'          => __( 'Edit Reels', 'your-plugin-textdomain' ),
+    'view_item'          => __( 'View Reels', 'your-plugin-textdomain' ),
+    'all_items'          => __( 'All Reels', 'your-plugin-textdomain' ),
+    'search_items'       => __( 'Search Reels', 'your-plugin-textdomain' ),
+    'parent_item_colon'  => __( 'Parent Reels:', 'your-plugin-textdomain' ),
+    'not_found'          => __( 'No Reels found.', 'your-plugin-textdomain' ),
+    'not_found_in_trash' => __( 'No Reels found in Trash.', 'your-plugin-textdomain' )
+  );
+  $args = array(
+    'labels'             => $labels,
+    'description'        => __( 'Description.', 'your-plugin-textdomain' ),
+    'public'             => true,
+    'publicly_queryable' => true,
+    'show_ui'            => true,
+    'show_in_menu'       => true,
+    'query_var'          => true,
+    'rewrite'            => array( 'slug' => 'reels' ),
+    'capability_type'    => 'post',
+    'taxonomies'         => array('category'),
+    'has_archive'        => true,
+    'hierarchical'       => false,
+    'menu_position'      => 40,
+    'menu_icon'          => 'dashicons-video-alt2',
+    'show_in_rest'       => true,
+    'rest_base'          => 'reels-api',
+    'rest_controller_class' => 'WP_REST_Posts_Controller',
+    'supports'           => array( 'title', 'editor', 'author', 'page-attributes', 'thumbnail' )
+  );
+  register_post_type( 'reels', $args );
+}
+
+add_action( 'init', 'photoscpt' );
+
+function photoscpt() {
+  $labels = array(
+    'name'               => _x( 'Photos', 'post type general name', 'your-plugin-textdomain' ),
+    'singular_name'      => _x( 'Photos', 'post type singular name', 'your-plugin-textdomain' ),
+    'menu_name'          => _x( 'Photos', 'admin menu', 'your-plugin-textdomain' ),
+    'name_admin_bar'     => _x( 'Photos', 'add new on admin bar', 'your-plugin-textdomain' ),
+    'add_new'            => _x( 'Add New', 'Photos', 'your-plugin-textdomain' ),
+    'add_new_item'       => __( 'Add New Photos', 'your-plugin-textdomain' ),
+    'new_item'           => __( 'New Photos', 'your-plugin-textdomain' ),
+    'edit_item'          => __( 'Edit Photos', 'your-plugin-textdomain' ),
+    'view_item'          => __( 'View Photos', 'your-plugin-textdomain' ),
+    'all_items'          => __( 'All Photos', 'your-plugin-textdomain' ),
+    'search_items'       => __( 'Search Photos', 'your-plugin-textdomain' ),
+    'parent_item_colon'  => __( 'Parent Photos:', 'your-plugin-textdomain' ),
+    'not_found'          => __( 'No Photos found.', 'your-plugin-textdomain' ),
+    'not_found_in_trash' => __( 'No Photos found in Trash.', 'your-plugin-textdomain' )
+  );
+  $args = array(
+    'labels'             => $labels,
+    'description'        => __( 'Description.', 'your-plugin-textdomain' ),
+    'public'             => true,
+    'publicly_queryable' => true,
+    'show_ui'            => true,
+    'show_in_menu'       => true,
+    'query_var'          => true,
+    'rewrite'            => array( 'slug' => 'photos' ),
+    'capability_type'    => 'post',
+    'taxonomies'         => array('category'),
+    'has_archive'        => true,
+    'hierarchical'       => false,
+    'menu_position'      => 40,
+    'menu_icon'          => 'dashicons-camera',
+    'show_in_rest'       => true,
+    'rest_base'          => 'photos-api',
+    'rest_controller_class' => 'WP_REST_Posts_Controller',
+    'supports'           => array( 'title', 'editor', 'author', 'page-attributes', 'thumbnail' )
+  );
+  register_post_type( 'photos', $args );
+}
 
 ?>

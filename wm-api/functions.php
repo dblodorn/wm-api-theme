@@ -60,16 +60,23 @@ if(function_exists('acf_add_options_page')) {
   ));
 
   acf_add_options_page(array(
-    'page_title' 	=> 'Contact Info',
-    'menu_title' 	=> 'Contact Info',
-    'menu_slug' 	=> 'contact-info',
+    'page_title' 	=> 'Landing',
+    'menu_title' 	=> 'Landing',
+    'menu_slug' 	=> 'landing',
+		'parent_slug'	=> 'site-content',
+  ));
+  
+  acf_add_options_page(array(
+    'page_title' 	=> 'About',
+    'menu_title' 	=> 'About',
+    'menu_slug' 	=> 'about',
 		'parent_slug'	=> 'site-content',
   ));
 
   acf_add_options_page(array(
-    'page_title' 	=> 'Socials',
-    'menu_title' 	=> 'Socials',
-    'menu_slug' 	=> 'socials',
+    'page_title' 	=> 'Contact',
+    'menu_title' 	=> 'Contact',
+    'menu_slug' 	=> 'contact',
 		'parent_slug'	=> 'site-content',
   ));
 

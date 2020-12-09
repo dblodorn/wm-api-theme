@@ -188,3 +188,43 @@
     $string = preg_replace("/[\s_]/", "-", $string);
     return $string;
   }
+
+  function return_first_taxonomy_slug($p, $taxonomy) {
+    $terms = get_the_terms($p->ID, $taxonomy);
+    $term_array = array();
+    foreach($terms as $term) {
+      $term_array = array(
+        $term->slug
+      );
+    }
+    if($terms) {
+      return $term_array[0];
+    } else {
+      return false;
+    }
+  };
+
+  function return_first_taxonomy_name($p, $taxonomy) {
+    $terms = get_the_terms($p->ID, $taxonomy);
+    $term_array = array();
+    foreach($terms as $term) {
+      $term_array = array(
+        $term->name
+      );
+    }
+    if($terms) {
+      return $term_array[0];
+    } else {
+      return false;
+    }
+  };
+
+  function time_to_seconds($time) {
+    if ($time) {
+      $dt = new DateTime("1970-01-01 $time", new DateTimeZone('UTC'));
+      $seconds = (int)$dt->getTimestamp();
+      return $seconds;
+    } else {
+      return false;
+    }
+  }
