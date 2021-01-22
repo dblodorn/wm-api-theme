@@ -32,6 +32,11 @@
     return wp_list_pluck($taxonomy_return, 'name');
   };
 
+  function return_taxonomy_array_slug($p, $taxonomy) {
+    $taxonomy_return = get_the_terms($p->ID, $taxonomy);
+    return wp_list_pluck($taxonomy_return, 'slug');
+  };
+
   function return_taxonomy_array_with_slug($p, $taxonomy) {
     $terms = get_the_terms($p->ID, $taxonomy);
     $term_array = array();
@@ -146,14 +151,9 @@
     $small = wp_get_attachment_image_src($attachment_id, 'medium', false);
     list($src, $width, $height) = $xl;
     return array(
-      'xlarge' => $src,
-      'large' => $large[0],
-      'medium' => $medium[0],
-      'small' => $small[0],
-      'size' => array(
-        'w' => $width,
-        'h' => $height
-      ),
+      'src' => $src,
+      'w' => $width,
+      'h' => $height
     );
   }
 
@@ -224,6 +224,17 @@
       $dt = new DateTime("1970-01-01 $time", new DateTimeZone('UTC'));
       $seconds = (int)$dt->getTimestamp();
       return $seconds;
+    } else {
+      return false;
+    }
+  }
+
+  function simple_slideshow_gallery($images) {
+    if ($images) {
+      foreach ($images as $image) {
+        $imgArray[] = $image;
+      }
+      return $imgArray;
     } else {
       return false;
     }

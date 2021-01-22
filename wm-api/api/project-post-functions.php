@@ -5,17 +5,6 @@
       'layout' => 'video',
     );
   }
- 
-  function simple_slideshow_gallery($images) {
-    if ($images) {
-      foreach ($images as $image) {
-        $imgArray[] = $image;
-      }
-      return $imgArray;
-    } else {
-      return false;
-    }
-  }
 
   function insert_project($post) {
     return array(
@@ -52,6 +41,7 @@
     return array(
       'layout' => 'block_quote',
       'copy' => get_sub_field( 'copy' ),
+      'hide_quotes' => get_sub_field('hide_quote_marks')
     );
   }
 
@@ -60,13 +50,15 @@
     return array(
       'layout' => 'photo_gallery',
       'images' => simple_slideshow_gallery($images),
+      'options' => get_sub_field('gallery_options'),
     );
   }
 
   function return_flex_project_insert() {
     return array(
       'layout' => 'project_insert',
-      'projects' => insert_projects()
+      'projects' => insert_projects(),
+      'layout_style' => get_sub_field('layout_style')
     );
   }
 
@@ -144,22 +136,67 @@
     }
   }
 
+  function return_project_tags($tag) {
+    $tags = array();
+    $client_tags_terms = get_field( $tag );
+    if ( $client_tags_terms ):
+      foreach ( $client_tags_terms as $client_tags_term ):
+        $tags[] = array(
+          'name' => $client_tags_term->name,
+          'slug' => $client_tags_term->slug
+        );
+      endforeach;
+      return $tags;
+    else:
+      return false;
+    endif;
+  }
+
+  function return_thumbwidth($field) {
+    if ($field === null ||  $field === false) {
+      return 500;
+    } else {
+      return (int)$field;
+    }
+  }
+
+  function return_custom_thumbnail($field) {
+    if ($field === null ||  $field === false) {
+      return false;
+    } else {
+      return array (
+        'src' => $field['url'],
+        'w' => $field['width'],
+        'h' => $field['height']
+      );
+    }
+  }
+
   function project_data($post, $p) {
     $type = $post->post_type;
+    $thumbnail_custom = get_field( 'custom_thumbnail', $post->ID );
+    $max_width = get_field( 'thumbnail_max_width', $post->ID );
+    $max_height = get_field( 'thumbnail_max_height', $post->ID );
     return array(
       'id' => $post->ID,
       'slug' => $post->post_name,
       'title' => $post->post_title,
       'post_type' => $type,
-      'custom_thumbnail' => return_null_false(get_field( 'custom_thumbnail', $post->ID )),
-      'thumbnail' => return_thumb_url($post),
+      'thumbnail_max_width' => return_thumbwidth($max_width),
+      'thumbnail_max_height' => return_thumbwidth($max_width),
+      'thumbnail' => return_thumb_arr($post),
+      'custom_thumbnail' => return_custom_thumbnail($thumbnail_custom),
+      'meta_description' => return_null_false(get_field( 'meta_description', $post->ID )),
+      'display_title' => return_null_false(get_field( 'display_title', $post->ID )),
+      'categories' => return_taxonomy_array_with_slug($post, 'type'),
+      'curated_tags' => array(
+        'clients' => return_project_tags('client_tags'),
+        'categories' => return_project_tags('category_tags')
+      ),
       'tags' => array(
-        'director_name' => return_first_taxonomy_name($post, 'director'),
-        'director_slug' => return_first_taxonomy_slug($post, 'director'),
-        'type_name' => return_first_taxonomy_name($post, 'type'),
-        'type_slug' => return_first_taxonomy_slug($post, 'type'),
-        'client_name' => return_first_taxonomy_name($post, 'client'),
-        'client_slug' => return_first_taxonomy_slug($post, 'client'),
+        'director' => return_taxonomy_array_slug($post, 'director'),
+        'type' => return_taxonomy_array_slug($post, 'type'),
+        'client' => return_taxonomy_array_slug($post, 'client')
       ),
       'data' => acf_data($type, $post->ID)
     );

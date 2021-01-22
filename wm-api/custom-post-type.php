@@ -39,7 +39,7 @@ function project_cpt() {
     'query_var'          => true,
     'rewrite'            => array( 'slug' => 'project' ),
     'capability_type'    => 'post',
-    'taxonomies'         => array('type', 'director', 'client', 'agency'),
+    'taxonomies'         => array('type', 'director', 'client'),
     'has_archive'        => true,
     'hierarchical'       => false,
     'menu_position'      => null,
@@ -115,36 +115,6 @@ add_action( 'init', 'type_taxonomy', 30 );
   register_taxonomy('type', array( 'project', 'not-our-work' ), $args);
 }
 
-// Product Category Taxonomy
-add_action( 'init', 'agency_taxonomy', 30 ); 
-  function agency_taxonomy() {
-  $labels = array(
-    'name'                  => _x( 'Agencies', 'taxonomy general name' ),
-    'singular_name'         => _x( 'Agency', 'taxonomy singular name' ),
-    'search_items'          => __( 'Search Agencies' ),
-    'all_items'             => __( 'All Agencies' ),
-    'parent_item'           => __( 'Parent Agencies' ),
-    'parent_item_colon'     => __( 'Parent Agency:' ),
-    'edit_item'             => __( 'Edit Agency' ),
-    'update_item'           => __( 'Update Agency' ),
-    'add_new_item'          => __( 'Add New Agency' ),
-    'new_item_name'         => __( 'New Agency Name' ),
-    'menu_name'             => __( 'Agency' ),
-  );
-  $args = array(
-    'hierarchical'          => true,
-    'labels'                => $labels,
-    'show_ui'               => true,
-    'show_admin_column'     => true,
-    'query_var'             => true,
-    'rewrite'               => array( 'slug' => 'agency' ),
-    'show_in_rest'          => true,
-    'rest_base'             => 'agency-api',
-    'rest_controller_class' => 'WP_REST_Terms_Controller',
-  );
-  register_taxonomy('agency', array( 'project' ), $args);
-}
-
 add_action( 'init', 'client_taxonomy', 30 ); 
   function client_taxonomy() {
   $labels = array(
@@ -207,14 +177,9 @@ function filter_client() {
   tsm_filter_post_type_by_taxonomy('project', 'client');
 }
 
-function filter_agency() {
-  tsm_filter_post_type_by_taxonomy('project', 'agency');
-}
-
 add_action('restrict_manage_posts', 'filter_director');
 add_action('restrict_manage_posts', 'filter_type');
 add_action('restrict_manage_posts', 'filter_client');
-add_action('restrict_manage_posts', 'filter_agency');
 
 // NEXT
 function tsm_convert_id_to_term_in_query_director($query) {
@@ -250,21 +215,9 @@ function tsm_convert_id_to_term_in_query_client($query) {
 	}
 }
 
-function tsm_convert_id_to_term_in_query_agency($query) {
-	global $pagenow;
-	$post_type = 'project';
-	$taxonomy  = 'agency';
-	$q_vars    = &$query->query_vars;
-	if ( $pagenow == 'edit.php' && isset($q_vars['post_type']) && $q_vars['post_type'] == $post_type && isset($q_vars[$taxonomy]) && is_numeric($q_vars[$taxonomy]) && $q_vars[$taxonomy] != 0 ) {
-		$term = get_term_by('id', $q_vars[$taxonomy], $taxonomy);
-		$q_vars[$taxonomy] = $term->slug;
-	}
-}
-
 add_filter('parse_query', 'tsm_convert_id_to_term_in_query_director');
 add_filter('parse_query', 'tsm_convert_id_to_term_in_query_type');
 add_filter('parse_query', 'tsm_convert_id_to_term_in_query_client');
-add_filter('parse_query', 'tsm_convert_id_to_term_in_query_agency');
 
 //-------------------------------------------------------------------
 // CUSTOM POST TYPE: NOT OUR WORK
