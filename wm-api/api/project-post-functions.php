@@ -41,7 +41,7 @@
     return array(
       'layout' => 'block_quote',
       'copy' => get_sub_field( 'copy' ),
-      'hide_quotes' => get_sub_field('hide_quote_marks')
+      'hide_quotes' => get_sub_field('hide_quotes')
     );
   }
 

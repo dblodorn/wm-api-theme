@@ -1,7 +1,7 @@
 <?php
 
-function landing_projects() {
-  $homepage = get_field( 'homepage', 'option' );
+function landing_projects($field) {
+  $homepage = get_field( $field, 'option' );
   $projects = false;
   if ( $homepage ):
     foreach ( $homepage as $post ):
@@ -44,6 +44,10 @@ function return_styling() {
     'text_mode_hover_b' => get_field( 'text_mode_hover_b', 'option' ),
     'text_mode_hover_c' => get_field( 'text_mode_hover_c', 'option' ),
     'text_mode_hover_d' => get_field( 'text_mode_hover_d', 'option' ),
+    'contact_hover' => get_field( 'contact_hover', 'option' ),
+    'about_hover' => get_field( 'about_hover', 'option' ),
+    'filter_hover' => get_field( 'filter_hover', 'option' ),
+    'text_mode_hover' => get_field( 'text_mode_hover', 'option' ),
   );
 }
 
@@ -199,6 +203,7 @@ function wm_data(){
     'landing' => return_meta('home_meta'),
     'about' => return_about(),
     'contact' => return_contact(),
-    'projects' => landing_projects(),
+    'projects' => landing_projects('homepage'),
+    'filter_projects' => landing_projects('filter_only_work'),
   );
 }

@@ -232,7 +232,11 @@
   function simple_slideshow_gallery($images) {
     if ($images) {
       foreach ($images as $image) {
-        $imgArray[] = $image;
+        $imgArray[] = array(
+          'src' => $image['url'],
+          'w' => $image['width'],
+          'h' => $image['height']
+        );
       }
       return $imgArray;
     } else {
